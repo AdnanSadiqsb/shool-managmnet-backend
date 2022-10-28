@@ -2,50 +2,52 @@ const User = require("../models/Users");
 const bcrypt = require("bcrypt");
 
 const login = async (req, res) => {
-
+  let { email, password } = req.body;
   try {
-    let { email, password } = req.body;
+    if(!(email, password))
+    {
+      return res.status(400).json({ success:false, error:"Please fill all fields"})
 
-    if ((email, password)) {
-      const user = await User.findOne({ email: email });
-      if (user) {
-        const checkpassword = await bcrypt.compare(password, user.password);
-
-        if (checkpassword) {
-          let { role } = user;
-
-          
-          res.status(200).json(user);
-        } else {
-          res.status(401).send("Password is incorrect");
-        }
-      } else {
-        res.status(404).send("User not found");
-      }
-    } else {
-      res.status(400).send("Please Provide email and password");
     }
+    const user = await User.findOne({ email: email });
+    if(!user)
+    {
+      return res.status(400).json({ success:false, error:"Try to Login with correct crediantials"})
+    }
+    const checkpassword = await bcrypt.compare(password, user.password);
+    if(!checkpassword)
+      {
+        return res.status(400).json({ success:false, error:"Try to Login with correct crediantials"})
+      }
+    res.json({success:true, user})  
+
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({success:false, error:error});
   }
 };
 
 const register = async (req, res) => {
   try {
     let { name, email, password, role } = req.body;
-
+    let olduser =await User.findOne({email:req.body.email})
+            
+    if(olduser)
+    {
+        // if user whith same email exist then returm error message
+        return res.status(400).json({success:false,error:"sorry a user with this email is already exist"})
+    }
     if ((name, email, password, role)) {
       const salt = await bcrypt.genSalt(10);
       password = await bcrypt.hash(password, salt);
       const user = await User.create({ name, email, password, role });
-      res.status(200).send("User registered successfully");
+      res.status(200).send({success:true, user});
     } else {
       res
         .status(400)
-        .send("Please Provide name, email, password and role of user");
+        .send( {success:false,error:"sorry a user with this email is already exist"});
     }
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({success:false, error:error});
   }
 };
 

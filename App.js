@@ -19,7 +19,7 @@ app.use(express.json());
 app.use('/api/v1/', authRouter);
 
 const start = async () => {
-    await connectionDB(process.env.MONGO_URI);
+    connectionDB(process.env.MONGO_URI);
     app.listen(PORT, () => {
         console.log("Server is listening on port " + PORT);
     })
