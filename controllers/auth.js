@@ -6,23 +6,23 @@ const login = async (req, res) => {
   try {
     if(!(email, password))
     {
-      return res.status(400).json({ success:false, error:"Please fill all fields"})
+      return res.status(401).send("Please Enter Valid Cradiantials")
 
     }
     const user = await User.findOne({ email: email });
     if(!user)
     {
-      return res.status(400).json({ success:false, error:"Try to Login with correct crediantials"})
+      return res.status(401).send("Try to Login with correct crediantials")
     }
     const checkpassword = await bcrypt.compare(password, user.password);
     if(!checkpassword)
       {
-        return res.status(400).json({ success:false, error:"Try to Login with correct crediantials"})
+        return res.status(401).send("Try to Login with correct crediantials")
       }
-    res.json({success:true, user})  
+    res.status(200).send(user)  
 
   } catch (error) {
-    res.status(500).json({success:false, error:error});
+    res.status(500).send(error);
   }
 };
 
