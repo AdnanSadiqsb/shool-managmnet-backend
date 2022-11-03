@@ -1,6 +1,6 @@
 const express = require("express");
 const connectionDB = require("./db/connection")
-require("dotenv").config();
+// require("dotenv").config();
 const authRouter = require("./routes/auth");
 
 const cors = require("cors");
@@ -11,7 +11,7 @@ const corsOptions = {
 };
 
 const app = express();
-const PORT = 5000;
+const port = 5000;
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -21,8 +21,8 @@ app.get('/',(req,res)=>
 app.use('/api/v1/', authRouter);
 
 const start = async () => {
-    connectionDB(process.env.MONGO_URI);
-    app.listen( process.env.PORT|| PORT, () => {
+    connectionDB("mongodb+srv://adnansadiq:fa19bse036@cluster0.v1frm.mongodb.net/schoolmanagmnet?authSource=admin&replicaSet=atlas-8p440y-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true");
+    app.listen( process.env.PORT|| port, () => {
         console.log("Server is listening on port " + PORT);
     })
 }
