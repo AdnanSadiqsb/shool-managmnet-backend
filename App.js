@@ -15,7 +15,7 @@ const PORT = 5000;
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.get((req,res)=>(
+app.get('/',(req,res)=>(
   res.send("cennected to nodejs")
 ))
 app.use('/api/v1/', authRouter);
