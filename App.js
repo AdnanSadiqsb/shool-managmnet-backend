@@ -23,7 +23,7 @@ app.use('/api/v1/', authRouter);
 const start = async () => {
     connectionDB("mongodb+srv://adnansadiq:fa19bse036@cluster0.v1frm.mongodb.net/schoolmanagmnet?authSource=admin&replicaSet=atlas-8p440y-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true");
     app.listen( process.env.PORT|| port, () => {
-        console.log("Server is listening on port " + PORT);
+        console.log("Server is listening on port " + port);
     })
 }
 
