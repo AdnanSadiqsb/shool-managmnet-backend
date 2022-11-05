@@ -2,6 +2,7 @@ const express = require("express");
 const connectionDB = require("./db/connection")
 require("dotenv").config();
 const authRouter = require("./routes/auth");
+const studentRouter = require("./routes/student");
 
 const cors = require("cors");
 const corsOptions = {
@@ -16,9 +17,11 @@ const port = 5000;
 app.use(cors(corsOptions));
 app.use(express.json());
 app.get('/',(req,res)=>
-  res.send("cennected to nodejs")
+  res.send("connected to nodejs")
 )
+
 app.use('/api/v1/', authRouter);
+app.use("/api/v1/student", studentRouter);
 
 const start = async () => {
     await connectionDB(process.env.MONGO_URI);
