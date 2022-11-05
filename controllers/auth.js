@@ -1,5 +1,5 @@
 const User = require("../models/Users");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const login = async (req, res) => {
   let { email, password } = req.body;
@@ -14,7 +14,7 @@ const login = async (req, res) => {
     {
       return res.status(401).send("Try to Login with correct crediantials")
     }
-    const checkpassword = await bcrypt.compare(password, user.password);
+    const checkpassword = bcrypt.compareSync(password, user.password);
     if(!checkpassword)
       {
         return res.status(401).send("Try to Login with correct crediantials")
@@ -37,8 +37,10 @@ const register = async (req, res) => {
         return res.status(400).json({success:false,error:"sorry a user with this email is already exist"})
     }
     if ((name, email, password, role)) {
-      const salt = await bcrypt.genSalt(10);
-      password = await bcrypt.hash(password, salt);
+      var salt = bcrypt.genSaltSync(10);
+      password = bcrypt.hashSync(password, salt);
+      // const salt = await bcrypt.genSalt(10);
+      // password = await bcrypt.hash(password, salt);
       const user = await User.create({ name, email, password, role });
       res.status(200).send({success:true, user});
     } else {
