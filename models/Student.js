@@ -23,12 +23,14 @@ const StudentSchema = new mongoose.Schema(
     },
 
     class: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Class",
       required: true,
     },
 
-    section: {
-      type: String,
+    class: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Section"
     },
 
     B_form: {

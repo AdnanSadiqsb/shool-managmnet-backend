@@ -3,6 +3,8 @@ const connectionDB = require("./db/connection")
 require("dotenv").config();
 const authRouter = require("./routes/auth");
 const studentRouter = require("./routes/student");
+const classRouter = require("./routes/class");
+const sectionRouter = require("./routes/section");
 
 const cors = require("cors");
 const corsOptions = {
@@ -22,6 +24,8 @@ app.get('/',(req,res)=>
 
 app.use('/api/v1/', authRouter);
 app.use("/api/v1/student", studentRouter);
+app.use("/api/v1/class", classRouter);
+app.use("/api/v1/section", sectionRouter);
 
 const start = async () => {
     await connectionDB(process.env.MONGO_URI);
