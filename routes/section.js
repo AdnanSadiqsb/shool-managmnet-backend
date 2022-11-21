@@ -1,9 +1,18 @@
 const express = require("express");
-const { getAllSections } = require("../controllers/section");
-
+const {
+  getAllSections,
+  getSection,
+  createSection,
+  updateSection,
+  deleteSection,
+} = require("../controllers/section");
 
 const router = express.Router();
 
-router.get("/", getAllSections);
+router.get("/:id/all", getAllSections);
+router.get("/:id", getSection);
+router.post("/create", createSection);
+router.patch("/:id", updateSection);
+router.delete("/", deleteSection);
 
 module.exports = router;
