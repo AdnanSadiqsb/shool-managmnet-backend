@@ -19,6 +19,7 @@ const getClass = async (req, res) => {
 };
 
 const createClass = async (req, res) => {
+  console.log("class created")
   try {
     const createdClass = await Class.create(req.body);
     res.status(200).send("Class Created Successfully");
