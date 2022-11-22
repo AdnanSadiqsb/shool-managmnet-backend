@@ -28,7 +28,7 @@ const StudentSchema = new mongoose.Schema(
       required: true,
     },
 
-    class: {
+    section: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Section"
     },

@@ -24,6 +24,13 @@ const ClassSchema = new mongoose.Schema({
         enum: ["Active", "Not Active"],
         default: "Not Active"
     },
+
+    sections: {
+        type: Array,
+        default: []
+    }
+
+    
 }, {timestamps: true})
 
 module.exports = mongoose.model("Class", ClassSchema);
