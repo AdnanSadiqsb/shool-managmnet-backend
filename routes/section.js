@@ -15,5 +15,5 @@ router.get("/:id", getSection);
 router.post("/create", createSection);
 router.patch("/:id", updateSection);
 router.delete("/", deleteSection);
-router.get("/all",getAlltoAllSections)
+router.post("/sections",getAlltoAllSections);
 module.exports = router;

@@ -1,19 +1,18 @@
 const Section = require("../models/Section");
 const Class = require("../models/Class");
-const { rawListeners } = require("../models/Class");
 
 
 const getAlltoAllSections = async (req, res) => {
   try {
-    const classId = req.params.id;
-    const myClass = await Class.find({});
-    res.status(200).json(myClass);
+    const allSections = await Section.find({});
+    res.status(200).json(allSections);
   } catch (error) {
     res.status(500).json(error);
   }
 };
 const getAllSections = async (req, res) => {
   try {
+    console.log("hlo word")
     const classId = req.params.id;
     const myClass = await Class.findById(classId);
     res.status(200).json(myClass.sections);
