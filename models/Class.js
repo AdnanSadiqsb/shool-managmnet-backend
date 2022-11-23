@@ -5,21 +5,8 @@ const ClassSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    sections:[
-        {
-            sectionName:{
-                type:String,
-
-            },
-            sectionStatus: {
-                type: String,
-                enum: ["Active", "Not Active"],
-                default: "Not Active"
-            },
-
-        }
-    ],
-    status: {
+ 
+    status: { 
         type: String,
         enum: ["Active", "Not Active"],
         default: "Not Active"
