@@ -78,4 +78,5 @@ module.exports = {
   createSection,
   updateSection,
   deleteSection,
+  getAlltoAllSections
 };
