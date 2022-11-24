@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 
 const getStudent = async (req, res) => {
    try {
-    const student = await Student.findById(req.params.id);
+    const student = await Student.findById(req.params.id).populate(["class","section"]);
     res.status(200).json(student);
    } catch (error) {
     res.status(500).json(error)
@@ -23,7 +23,7 @@ const createStudent = async (req, res) => {
 
 const getAllStudents = async (req, res) => {
     try {
-      const students = await Student.find({});
+      const students = await Student.find({}).populate('class');
       res.status(200).json(students);
     } catch (error) {
       res.status(500).json(error);
