@@ -6,7 +6,15 @@ const getAllSections = async (req, res) => {
   try {
     const classId = req.params.id;
     const myClass = await Class.findById(classId);
-    res.status(200).json(myClass.sections);
+    const sections = await Promise.all(
+      [
+        ...myClass.sections.map( (section) => {
+          return Section.findById(section);
+        })
+      ]
+    )
+
+    res.status(200).json(sections);
   } catch (error) {
     res.status(500).json(error);
   }
