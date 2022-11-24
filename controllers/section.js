@@ -10,6 +10,7 @@ const getAlltoAllSections = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
 const getAllSections = async (req, res) => {
   try {
     console.log("hlo word")
@@ -28,7 +29,6 @@ const getAllSections = async (req, res) => {
     res.status(500).json(error);
   }
 };
-
 const getSection = async (req, res) => {
   try {
     const sectionId = req.params.id;
