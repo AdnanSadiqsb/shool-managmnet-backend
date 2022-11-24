@@ -5,8 +5,8 @@ const ClassSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-
-    status: {
+ 
+    status: { 
         type: String,
         enum: ["Active", "Not Active"],
         default: "Not Active"
