@@ -9,6 +9,19 @@ const StudentSchema = new mongoose.Schema(
       maxLength: [25, "Name should not be greater than 25 characters"],
     },
 
+    roll_number: {
+      type: String,
+      required: true,
+      unique: true
+    },
+
+    fee: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Fee",
+      },
+    ],
+
     father_name: {
       type: String,
       required: true,
@@ -30,7 +43,7 @@ const StudentSchema = new mongoose.Schema(
 
     section: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Section"
+      ref: "Section",
     },
 
     B_form: {
