@@ -1,7 +1,6 @@
 const Fee = require("../models/Fee");
 const Student = require("../models/Student");
 const Class = require("../models/Class");
-const { findByIdAndUpdate } = require("../models/Section");
 
 const getFee = async (req, res) => {
   try {
@@ -15,7 +14,18 @@ const getFee = async (req, res) => {
 const getAllFee = async (req, res) => {
   try {
     const fees = await Fee.find({});
-    res.status(200).json(fees);
+    
+    // const feesWithClasses = await Promise.all([
+    //   ...fees.map((fee) => {
+    //     return {...fee, assignedClass: Class.find({ _id: { $in: fee.assignedClass } })};
+    //   })
+    // ]);
+
+    const feesWithClasses = fees.map((fee) => {
+        Class.find({ _id: { $in: fee.assignedClass } }).then(result => console.log(result));
+      });
+
+    res.status(200).json(feesWithClasses);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -23,8 +33,50 @@ const getAllFee = async (req, res) => {
 
 const createFee = async (req, res) => {
   try {
-    const fee = await Fee.create(req.body);
-    res.status(200).send("Fee Created Successfully");
+    // const { name, amount, classes, roll_number } = req.body;
+    const { name, amount, classes, students } = req.body;
+
+    const fee = await Fee.create({ name: name, amount: amount });
+
+    if (classes) {
+
+      await Fee.findByIdAndUpdate(fee._id, {$push: {assignedClass: classes}})
+      await Promise.all([
+        ...classes.map((cls) => {
+          return Student.updateMany(
+            { class: cls },
+            { $push: { fee: fee._id } }
+          );
+        }),
+      ]);
+    }
+    // if (roll_number) {
+    //   const student = await Student.findOneAndUpdate(
+    //     { roll_number: roll_number },
+    //     { $push: { fee: fee._id } }
+    //   );
+
+    //   await Fee.findByIdAndUpdate(fee._id, {
+    //     $push: { assignedStudent: student._id},
+    //   });
+    // }
+
+    if (students) {
+      await Fee.findByIdAndUpdate(fee._id, {
+        $push: { assignedStudent: students },
+      });
+
+      await Promise.all([
+        ...students.map((student) => {
+          return Student.findByIdAndUpdate(
+            student,
+            { $push: { fee: fee._id } }
+          );
+        }),
+      ]);
+    }
+
+    res.status(200).json("new fee created successfully");
   } catch (error) {
     res.status(500).json(error);
   }
@@ -40,11 +92,18 @@ const updateFee = async (req, res) => {
 };
 
 const deleteFee = async (req, res) => {
-  res.send("delete fee");
   try {
+    const fee = req.params.id;
+
+    await Student.update({}, { $pull: { fee: fee } });
+
+    await Fee.findByIdAndDelete(fee);
+    res.status(200).json("Fee Deleted successfully");
   } catch (error) {
     res.status(500).json(error);
   }
+
+
 };
 
 const FeeAddClasses = async (req, res) => {
@@ -145,3 +204,29 @@ module.exports = {
   FeeAddStudents,
   FeeRemoveStudents,
 };
+
+
+// async function create(req, res){
+//   try {
+//     const {name, amount, classes, roll_number} = req.body;
+
+//     const fee = await Fee.create({name: name, amount: amount});
+
+//     if(classes){
+//       await Promise.all([
+//         ...classes.map((cls) => {
+//           return Student.updateMany({ class: cls }, { $push: { fee: fee._id } });
+//         }),
+//       ]);
+//     }
+//     if (roll_number) {
+
+//       await Student.updateOne(
+//         { roll_number: roll_number },
+//         { $push: { fee: fee._id } }
+//       );
+//     }
+//   } catch (error) {
+//     res.json(error);
+//   }
+// }
